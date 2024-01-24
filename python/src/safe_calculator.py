@@ -1,17 +1,19 @@
-class Authorizer:
-    def authorize(self):
-        # in real life it would do some fancy lookup accross the network
-        raise RuntimeError("not implemented yet")
+from src.authorizer import Authorizer
+from src.unauthorized_access_exception import UnauthorizedAccessException
 
 
 class SafeCalculator:
     def __init__(self, authorizer: Authorizer):
         self.authorizer = authorizer
 
-
-    def add(self, left, right):
+    def add(self, a, b) -> int:
         authorized = self.authorizer.authorize()
+
+        return self.add_with_authorization_check(a, b, authorized)
+
+    @staticmethod
+    def add_with_authorization_check(a, b, authorized=None) -> int:
         # Bug! Should be `if not authorized`
-        if authorized:
-            raise RuntimeError("Not authorized")
-        return left + right
+        if not authorized:
+            raise UnauthorizedAccessException("Not authorized")
+        return a + b
