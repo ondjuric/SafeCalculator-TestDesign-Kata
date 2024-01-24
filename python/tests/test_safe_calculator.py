@@ -1,7 +1,5 @@
-
 import pytest
-
-from safe_calculator import SafeCalculator, Authorizer
+from src import SafeCalculator
 
 
 def test_add_should_not_raise_any_error_when_authorized():
